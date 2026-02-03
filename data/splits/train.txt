@@ -1,0 +1,5 @@
+# Relative paths to training samples (one per line)
+# Replace the placeholders with your actual paths under data/raw
+train/AL0006/event_frames
+train/FS0002/event_frames
+train/JP0014/event_frames

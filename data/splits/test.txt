@@ -1,0 +1,4 @@
+# Test split
+# Use relative paths; keep filenames consistent with annotations
+# Example placeholders:
+test/JP0026/event_frames

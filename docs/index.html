@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="eSkiTB: Event-based Ski Tracking Benchmark" />
+  <title>eSkiTB: Event-based Ski Tracking Benchmark</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="media/css/site.css" />
+</head>
+<body>
+  <header class="hero">
+    <nav class="nav">
+      <div class="brand">eSkiTB</div>
+      <div class="nav-links">
+        <a href="#highlights">Highlights</a>
+        <a href="#dataset">Dataset</a>
+        <a href="#pipeline">Pipeline</a>
+        <a href="#evaluation">Evaluation</a>
+        <a href="#download">Data</a>
+      </div>
+    </nav>
+    <div class="hero-content reveal">
+      <p class="eyebrow">Event-based Ski Tracking Benchmark</p>
+      <h1>Clean temporal contrast for cluttered winter sports</h1>
+      <p class="lede">300 broadcast sequences (AL/FS/JP) converted to events at 1280x720 using an <strong>iso-informational</strong> v2e pipeline—no neural interpolation. Dense 1 ms labels, visual attributes, and benchmarks against STARK (RGB) and SDTrack (spiking).</p>
+      <div class="cta-row">
+        <a class="cta primary" href="https://github.com/eventbasedvision/eskitb">GitHub Repo</a>
+        <a class="cta secondary" href="#download">Dataset (links coming)</a>
+        <a class="cta ghost" href="#citation">Paper (soon)</a>
+      </div>
+      <div class="meta">
+        <span>Train/Val/Test: 240 / 30 / 30 seq</span>
+        <span>Resolution: 1280x720</span>
+        <span>License: Code MIT, Data CC BY-NC 4.0</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="highlights" class="section reveal">
+      <div class="section-header">
+        <h2>Highlights</h2>
+        <p>Built for fair modality-vs-modality comparisons in cluttered broadcast footage.</p>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <p class="card-kicker">Scale</p>
+          <h3 class="card-title">300 seq</h3>
+          <p class="card-body">AL, FS, JP; 235 minutes of broadcast footage with attributes.</p>
+        </div>
+        <div class="card">
+          <p class="card-kicker">Resolution</p>
+          <h3 class="card-title">1280x720 events</h3>
+          <p class="card-body">Raw `(t,x,y,p)` HDF5; dense 1 ms boxes.</p>
+        </div>
+        <div class="card">
+          <p class="card-kicker">Iso-informational</p>
+          <h3 class="card-title">No interpolation</h3>
+          <p class="card-body">Direct v2e conversion; every event maps to observed photometric change.</p>
+        </div>
+        <div class="card">
+          <p class="card-kicker">Benchmark</p>
+          <h3 class="card-title">STARK vs SDTrack</h3>
+          <p class="card-body">RGB transformer vs spiking transformer on identical splits.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="section-header">
+        <h2>Teaser</h2>
+        <p>Event streams naturally suppress static overlays and clutter in broadcast ski footage.</p>
+      </div>
+      <div class="media-block">
+        <img src="media/images/Teaser_image.png" alt="Teaser image" />
+      </div>
+    </section>
+
+    <section id="dataset" class="section reveal">
+      <div class="section-header">
+        <h2>Dataset</h2>
+        <p>Event-based reformulation of SkiTB with dense annotations and attributes.</p>
+      </div>
+      <div class="grid two">
+        <div class="card">
+          <h3 class="card-title">Content</h3>
+          <ul class="list">
+            <li>Events: HDF5 `events` with `(t, x, y, p)` in microseconds.</li>
+            <li>Annotations: `[x, y, w, h]` pixels, class `Skier`; 1 ms spline labels.</li>
+            <li>Attributes: occlusion, fast motion, illumination variation, background clutter, and more.</li>
+            <li>Splits: Train 240 / Val 30 / Test 30 sequences.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Stats</h3>
+          <p class="card-body">Heavy-tailed event rates, skewed scales, and dense motion during take-off and flight.</p>
+          <img class="card-image" src="media/images/eSkiTB Statistics.png" alt="Dataset statistics" />
+        </div>
+      </div>
+      <div class="media-block">
+        <img src="media/images/Qualitative_samples.png" alt="Qualitative samples" />
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="section-header">
+        <h2>Why events</h2>
+        <p>Screen-space overlays vanish in the event domain; physical clutter follows background flow.</p>
+      </div>
+      <div class="grid two">
+        <div class="card">
+          <img class="card-image" src="media/images/rgb_artifacts.png" alt="RGB artifacts" />
+          <p class="card-body">RGB trackers drift on broadcast overlays and banners.</p>
+        </div>
+        <div class="card">
+          <img class="card-image" src="media/images/eventSimulators_Comparision.png" alt="Event simulator comparison" />
+          <p class="card-body">v2e preserves skier silhouette and motion; used for eSkiTB conversion.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="pipeline" class="section reveal">
+      <div class="section-header">
+        <h2>Iso-informational pipeline</h2>
+        <p>Raw broadcast frames -> v2e -> events; no SuperSloMo or neural upsampling.</p>
+      </div>
+      <div class="media-block">
+        <img src="media/images/v2e pipeline without slowmo.png" alt="Pipeline" />
+      </div>
+    </section>
+
+    <section id="evaluation" class="section reveal">
+      <div class="section-header">
+        <h2>Evaluation</h2>
+        <p>Transformer parity: STARK (RGB) vs SDTrack (event) on identical splits.</p>
+      </div>
+      <div class="grid two">
+        <div class="card">
+          <h3 class="card-title">Headline numbers</h3>
+          <ul class="list">
+            <li>SDTrack (finetuned): 0.711 IoU, +0.399 over its pretrained baseline.</li>
+            <li>STARK (fine-tuned RGB): 0.795 IoU; ski-specific: 0.829 IoU.</li>
+            <li>High-clutter split: SDTrack 0.685 IoU (+20.0 over generic STARK).</li>
+          </ul>
+          <p class="card-body">Voxelized to 128x128 for current SNN limits; dataset supports full 1280x720.</p>
+        </div>
+        <div class="card">
+          <img class="card-image" src="media/images/IoU-over-time curves.png" alt="Training curves" />
+          <p class="card-body">Validation peaks around epoch 20; used as release checkpoint.</p>
+        </div>
+      </div>
+      <div class="media-block">
+        <img src="media/images/tracking_samples.png" alt="Tracking samples" />
+      </div>
+    </section>
+
+    <section id="download" class="section reveal">
+      <div class="section-header">
+        <h2>Data access</h2>
+        <p>Links and checksums will be posted here (Dropbox/Drive). Repo remains lightweight.</p>
+      </div>
+      <div class="grid two">
+        <div class="card">
+          <h3 class="card-title">What you'll get</h3>
+          <ul class="list">
+            <li>Train/Val/Test archives (events + annotations).</li>
+            <li>Optional RGB frames and diagnostics.</li>
+            <li>Splits in <strong>data/splits</strong>; schema in <strong>data/annotations</strong>.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Verify downloads</h3>
+          <pre class="code">md5sum train.tar.gz
+sha256sum train.tar.gz</pre>
+          <p class="card-body">Publish checksums with the links; keep relative paths consistent with the split files.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="citation" class="section reveal">
+      <div class="section-header">
+        <h2>Citation</h2>
+        <p>Cite eSkiTB when using the dataset or code (BibTeX coming with arXiv ID).</p>
+      </div>
+      <pre class="code">@article{eskitb2026,
+  title   = {eSkiTB: Event-based Ski Tracking Benchmark},
+  author  = {Vinod, Krishna and Vishal, Joseph Raj and Chanda, Kaustav and Ramesh, Prithvi Jai and Yang, Yezhou and Chakravarthi, Bharatesh},
+  journal = {arXiv preprint},
+  year    = {2026}
+}</pre>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Made for the eSkiTB release. Template inspired by prior robotics/event pages.</p>
+  </footer>
+
+  <script src="media/js/site.js"></script>
+</body>
+</html>
