@@ -1,25 +1,30 @@
 # eSkiTB: Event-based Ski Tracking Benchmark
 
-Camera-ready release scaffold for the eSkiTB paper. This repo is GitHub/Pages-friendly: metadata, splits, schema docs, tiny examples, and code pointers—no heavyweight data blobs.
+Event-based ski tracking benchmark derived from SkiTB. Public links and a SEBVS-style landing page are below.
 
-## Project snapshot
-- Paper: TODO (arXiv link)
-- Website: docs/index.html (serve with GitHub Pages)
-- Dataset links: TODO (Dropbox/Drive + MD5/SHA256)
-- Videos: TODO (YouTube playlist)
-- Code: evaluation + visualization hooks included here
+## Quick links
+- Paper: https://arxiv.org/abs/2601.06647
+- Dataset: https://www.dropbox.com/scl/fi/1fbsjthks57e3mucxrsz5/E-Ski_v2e.zip?rlkey=8hn6umsbo406eygoy7s81kg1d&st=0fntvbfr&dl=0
+- Code: https://github.com/eventbasedvision/eskitb
+- Website: docs/index.html (serve via GitHub Pages)
 
-## What is eSkiTB?
-- 300 broadcast sequences (AL/FS/JP) at 1280x720; 235 minutes total.
-- Train/val/test = 240/30/30 sequences.
-- Synthetic events from SkiTB via v2e under an **iso-informational** constraint (no neural interpolation or SuperSloMo).
-- Event tuples `(t, x, y, p)` in HDF5; bounding boxes for `Skier` with 1 ms spline-interpolated dense labels.
-- Attributes: 10 visual conditions (occlusion, fast motion, illumination variation, etc.).
+## Snapshot
+- Scale: 300 broadcast sequences (AL/FS/JP), 235 minutes, 1280x720.
+- Splits: Train/Val/Test = 240/30/30 sequences.
+- Conversion: v2e with **iso-informational** constraint (no SuperSloMo or neural interpolation).
+- Format: HDF5 events `(t, x, y, p)` in microseconds; boxes `[x, y, w, h]` with 1 ms spline interpolation.
+- Attributes: 10 visual conditions (occlusion, fast motion, illumination variation, background clutter, etc.).
 
-## Key findings (paper)
-- STARK (RGB transformer, fine-tuned): 0.795 IoU; ski-specific: 0.829 IoU.
-- SDTrack (spiking transformer) fine-tuned on eSkiTB: **0.711 IoU**, +0.399 over its pretrained baseline.
-- High-clutter split: SDTrack hits **0.685 IoU**, +20.0 IoU over generic STARK, confirming robustness to broadcast overlays and banners.
+## Headline results (from the paper)
+- STARK (RGB, fine-tuned): 0.795 IoU; ski-specific: 0.829 IoU.
+- SDTrack (spiking, fine-tuned on eSkiTB): **0.711 IoU**, +0.399 over its pretrained baseline.
+- High-clutter split: SDTrack **0.685 IoU**, +20.0 IoU over generic STARK.
+
+## Visuals
+- Teaser: docs/media/images/Teaser_image.png
+- Stats: docs/media/images/eSkiTB Statistics.png
+- RGB vs event clutter: docs/media/images/rgb_artifacts.png
+- Pipeline: docs/media/images/v2e pipeline without slowmo.png
 
 ## Repository layout
 ```
@@ -35,7 +40,7 @@ eskitb-repo/
 │   ├── visualization/     # Event + box overlay helper
 │   └── generation/        # Conversion configs/notes
 ├── examples/              # Tiny sample for smoke tests
-└── docs/                  # Static site for GitHub Pages
+└── docs/                  # Static site (GitHub Pages)
 ```
 
 ## Getting started
@@ -44,12 +49,12 @@ eskitb-repo/
 git clone https://github.com/eventbasedvision/eskitb.git
 cd eskitb
 ```
-2) Download dataset archives to `data/raw` (links + checksums coming). Keep paths consistent with `data/splits/*`.
+2) Download the dataset zip and unpack under `data/raw` (align paths with `data/splits/*`).
 3) (Optional) Create env
 ```
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt  # to be added with actual deps
+pip install -r requirements.txt  # add your deps here
 ```
 4) Smoke test paths (after data is in place)
 ```
@@ -59,11 +64,6 @@ python code/evaluation/evaluate.py \
   --data-root data/raw
 ```
 
-## Data access (summary)
-- Full dataset hosted externally; see [data/README.md](data/README.md) for links + integrity checks.
-- Splits in [data/splits](data/splits); annotations/schema in [data/annotations](data/annotations).
-- Tiny sample expected under `examples/` (add a few-MB clip + annotation).
-
 ## License
-- Code: MIT (see [LICENSE](LICENSE)).
+- Code: MIT (see LICENSE).
 - Dataset: CC BY-NC 4.0 recommended; restate terms next to download links.
