@@ -9,7 +9,7 @@
 <div>
 <a href="https://arxiv.org/abs/2601.06647">Paper</a> | 
 <a href="https://www.dropbox.com/scl/fi/1fbsjthks57e3mucxrsz5/E-Ski_v2e.zip?rlkey=8hn6umsbo406eygoy7s81kg1d&st=0fntvbfr&dl=0">Dataset</a> | 
-<a href="https://eventbasedvision.github.io/eskitb/index.html">Website</a>
+<a href="https://eventbasedvision.github.io/eskitb/">Website</a>
 </div>
 
 <hr>
